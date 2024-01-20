@@ -13,7 +13,7 @@ export function AuthLayout() {
           <p>&copy; 2021 Pizza Shop. All rights reserved.</p>
         </footer>
       </div>
-      <div className='flex flex-col justify-center items-center'>
+      <div className='relative flex flex-col justify-center items-center'>
         <Outlet />
       </div>
     </div>
