@@ -28,7 +28,7 @@ export function Orders() {
                 <TableRow>
                   <TableHead className="w-[64px]"></TableHead>
                   <TableHead className="w-[140px]">Id</TableHead>
-                  <TableHead className="w-[180px]">Created At</TableHead>
+                  <TableHead className="w-[180px]">Order in</TableHead>
                   <TableHead className="w-[140px]">Status</TableHead>
                   <TableHead>Client</TableHead>
                   <TableHead className="w-[140px]">Total</TableHead>
