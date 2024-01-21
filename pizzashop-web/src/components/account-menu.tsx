@@ -1,6 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Building, ChevronDown, LogOut } from 'lucide-react'
-import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { Button } from '@/components/ui/button'
@@ -13,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Skeleton } from '@/components/ui/skeleton'
-import { AppContext } from '@/contexts/app-context'
+import { env } from '@/env'
 import {
   getManagedRestaurant,
   getManagedRestaurantMock,
@@ -26,7 +25,7 @@ import { Dialog, DialogTrigger } from './ui/dialog'
 
 export function AccountMenu() {
   const navigate = useNavigate()
-  const { useMock } = useContext(AppContext)
+  const useMock = env.VITE_RUN_MOCK_API
 
   const { data: profile, isLoading: isLoadingProfile } = useQuery({
     queryKey: ['profile'],
@@ -95,7 +94,7 @@ export function AccountMenu() {
               className="text-rose-500 dark:text-rose-400"
               disabled={isSigninOut}
             >
-              <button className='w-full'  onClick={() => signOutFn()}>
+              <button className="w-full" onClick={() => signOutFn()}>
                 <LogOut className="mr-2 h-4 w-4" />
                 <span>Sign out</span>
               </button>

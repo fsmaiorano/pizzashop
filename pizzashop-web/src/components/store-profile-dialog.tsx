@@ -1,12 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { DialogClose } from '@radix-ui/react-dialog'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { useContext } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
-import { AppContext } from '@/contexts/app-context'
+import { env } from '@/env'
 import {
   getManagedRestaurant,
   getManagedRestaurantMock,
@@ -35,7 +34,7 @@ type StoreProfileSchema = z.infer<typeof storeProfileSchema>
 
 export function StoreProfileDialog() {
   const queryClient = useQueryClient()
-  const { useMock } = useContext(AppContext)
+  const useMock = env.VITE_RUN_MOCK_API
   const { data: managedRestaurant } = useQuery({
     queryKey: ['managed-restaurant'],
     queryFn: useMock === true ? getManagedRestaurantMock : getManagedRestaurant,

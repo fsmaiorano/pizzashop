@@ -1,5 +1,4 @@
 import { useMutation } from '@tanstack/react-query'
-import { useContext } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
@@ -9,7 +8,7 @@ import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { AppContext } from '@/contexts/app-context'
+import { env } from '@/env'
 import { registerRestaurant } from '@/services/register-restaurants'
 
 const signUpForm = z.object({
@@ -24,7 +23,7 @@ type SignUpForm = z.infer<typeof signUpForm>
 export function SignUp() {
   const navigate = useNavigate()
   const { handleSubmit, register, formState } = useForm<SignUpForm>()
-  const { useMock } = useContext(AppContext)
+  const useMock = env.VITE_RUN_MOCK_API
 
   const { mutateAsync: registerRestaurantFn } = useMutation({
     mutationFn: registerRestaurant,
