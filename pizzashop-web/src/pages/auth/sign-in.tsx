@@ -26,7 +26,6 @@ export function SignIn() {
 
   async function handleSignIn(data: SignInForm) {
     try {
-      debugger;
       if (useMock) {
         console.log(data)
         await new Promise((resolve) => setTimeout(resolve, 1000))
