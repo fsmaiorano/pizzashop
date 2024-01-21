@@ -29,5 +29,7 @@ export async function getProfileMock() {
     } as GetProfileResponse,
   }
 
+  console.log('getProfileMock', response.data)
+
   return response.data
 }
