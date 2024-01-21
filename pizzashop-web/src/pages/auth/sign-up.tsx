@@ -1,3 +1,5 @@
+import { useMutation } from '@tanstack/react-query'
+import { useContext } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
@@ -7,12 +9,14 @@ import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { AppContext } from '@/contexts/app-context'
+import { registerRestaurant } from '@/services/register-restaurants'
 
 const signUpForm = z.object({
   email: z.string().email(),
   restaurantName: z.string().min(3),
   managerName: z.string().min(3),
-  phoneNumber: z.string(),
+  phone: z.string(),
 })
 
 type SignUpForm = z.infer<typeof signUpForm>
@@ -20,15 +24,30 @@ type SignUpForm = z.infer<typeof signUpForm>
 export function SignUp() {
   const navigate = useNavigate()
   const { handleSubmit, register, formState } = useForm<SignUpForm>()
+  const { useMock } = useContext(AppContext)
+
+  const { mutateAsync: registerRestaurantFn } = useMutation({
+    mutationFn: registerRestaurant,
+  })
 
   async function handleSignUp(data: SignUpForm) {
     try {
-      console.log(data)
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      if (useMock) {
+        console.log(data)
+        await new Promise((resolve) => setTimeout(resolve, 1000))
+      } else {
+        await registerRestaurantFn({
+          email: data.email,
+          restaurantName: data.restaurantName,
+          managerName: data.managerName,
+          phone: data.phone,
+        })
+      }
+
       toast.success('Account created successfully', {
         action: {
           label: 'Sign in',
-          onClick: () => navigate('/sign-in'),
+          onClick: () => navigate(`/sign-in?email=${data.email}`),
         },
       })
     } catch {
@@ -74,12 +93,8 @@ export function SignUp() {
               <Input id="email" type="text" {...register('email')} />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="phoneNumber">Phone number</Label>
-              <Input
-                id="phoneNumber"
-                type="phone"
-                {...register('phoneNumber')}
-              />
+              <Label htmlFor="phone">Phone number</Label>
+              <Input id="phone" type="phone" {...register('phone')} />
             </div>
             <Button
               disabled={formState.isSubmitting}
