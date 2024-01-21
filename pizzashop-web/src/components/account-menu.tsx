@@ -1,16 +1,36 @@
+import { useQuery } from '@tanstack/react-query'
 import { Building, ChevronDown, LogOut } from 'lucide-react'
+import { useContext } from 'react'
 
 import { Button } from '@/components/ui/button'
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuGroup,
-    DropdownMenuItem,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { AppContext } from '@/contexts/app-context'
+import {
+  getManagedRestaurant,
+  getManagedRestaurantMock,
+} from '@/services/get-managed-restaurant'
+import { getProfile, getProfileMock } from '@/services/get-profile'
 
 export function AccountMenu() {
+  const { useMock } = useContext(AppContext)
+
+  const { data: profile } = useQuery({
+    queryKey: ['profile'],
+    queryFn: useMock === true ? getProfileMock : getProfile,
+  })
+
+  const { data: managedRestaurant } = useQuery({
+    queryKey: ['managed-restaurant'],
+    queryFn: useMock === true ? getManagedRestaurantMock : getManagedRestaurant,
+  })
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -18,29 +38,29 @@ export function AccountMenu() {
           variant="outline"
           className="flex select-none items-center gap-2"
         >
-          Pizza Shop
+          {managedRestaurant?.name}
           <ChevronDown className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuGroup>
           <DropdownMenuItem className="flex flex-col items-start">
-            <span>User</span>
+            <span>{profile?.name}</span>
             <span className="text-xs font-normal text-muted-foreground">
-              email@pizzashop.com
+            {profile?.email}
             </span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-            <DropdownMenuItem>
-                <Building className='mr-2 h-4 w-4' />
-                <span>Store profile</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem className='text-rose-500 dark:text-rose-400'>
-                <LogOut className='mr-2 h-4 w-4' />
-                <span>Sign out</span>
-            </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Building className="mr-2 h-4 w-4" />
+            <span>Store profile</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem className="text-rose-500 dark:text-rose-400">
+            <LogOut className="mr-2 h-4 w-4" />
+            <span>Sign out</span>
+          </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
       </DropdownMenuContent>
