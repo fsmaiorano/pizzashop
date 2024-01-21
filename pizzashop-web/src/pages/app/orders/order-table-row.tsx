@@ -2,6 +2,7 @@ import { DialogTrigger } from '@radix-ui/react-dialog'
 import { formatDistanceToNow } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { ArrowRight, Search, X } from 'lucide-react'
+import { useState } from 'react'
 
 import { OrderStatus } from '@/components/order-status'
 import { Button } from '@/components/ui/button'
@@ -21,17 +22,19 @@ export interface OrderTableRowProps {
 }
 
 export function OrderTableRow({ order }: OrderTableRowProps) {
+  const [isSetDetailsOpen, setDetailsOpen] = useState(false)
+
   return (
     <TableRow>
       <TableCell>
-        <Dialog>
+        <Dialog open={isSetDetailsOpen} onOpenChange={setDetailsOpen}>
           <DialogTrigger asChild>
             <Button variant="outline" size="xs">
               <Search className="h-3 w-3" />
               <span className="sr-only">Order detail</span>
             </Button>
           </DialogTrigger>
-          <OrderDetails />
+          <OrderDetails orderId={order.orderId} open={isSetDetailsOpen} />
         </Dialog>
       </TableCell>
       <TableCell className="font-mono text-xs font-medium">
