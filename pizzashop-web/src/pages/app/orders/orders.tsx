@@ -21,17 +21,33 @@ export function Orders() {
   const useMock = env.VITE_RUN_MOCK_API
 
   const [searchParams, setSearchParams] = useSearchParams()
+  const orderId = searchParams.get('orderId')
+  const customerName = searchParams.get('customerName')
+  const status = searchParams.get('status')
+
   const pageIndex = z.coerce
     .number()
     .transform((page) => page - 1)
     .parse(searchParams.get('page') ?? '1')
 
   const { data: result } = useQuery({
-    queryKey: ['orders', pageIndex],
+    queryKey: ['orders', pageIndex, orderId, customerName, status],
     queryFn:
       useMock === true
-        ? () => getOrdersMock({ pageIndex })
-        : () => getOrders({ pageIndex }),
+        ? () =>
+            getOrdersMock({
+              pageIndex,
+              orderId,
+              customerName,
+              status: status === 'all' ? null : status,
+            })
+        : () =>
+            getOrders({
+              pageIndex,
+              orderId,
+              customerName,
+              status: status === 'all' ? null : status,
+            }),
     staleTime: Infinity,
   })
 

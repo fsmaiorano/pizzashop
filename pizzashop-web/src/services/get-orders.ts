@@ -2,6 +2,9 @@ import { api } from '@/lib/axios'
 
 export interface GetOrdersQuery {
   pageIndex?: number | null
+  orderId?: string | null
+  customerName?: string | null
+  status?: string | null
 }
 
 export interface GetOrdersResponse {
@@ -19,17 +22,30 @@ export interface GetOrdersResponse {
   }
 }
 
-export async function getOrders({ pageIndex }: GetOrdersQuery) {
+export async function getOrders({
+  pageIndex,
+  orderId,
+  customerName,
+  status,
+}: GetOrdersQuery) {
   const response = await api.get<GetOrdersResponse>('/orders', {
     params: {
       pageIndex: pageIndex,
+      orderId: orderId,
+      customerName: customerName,
+      status: status,
     },
   })
 
   return response.data
 }
 
-export async function getOrdersMock({ pageIndex }: GetOrdersQuery) {
+export async function getOrdersMock({
+  pageIndex,
+  orderId,
+  customerName,
+  status,
+}: GetOrdersQuery) {
   const mock = {
     orders: [
       {
@@ -105,5 +121,27 @@ export async function getOrdersMock({ pageIndex }: GetOrdersQuery) {
     ],
     meta: { pageIndex: pageIndex, perPage: 10, totalCount: 200 },
   }
+
+  if (orderId) {
+    mock.orders = mock.orders.filter((order) => order.orderId === orderId)
+  }
+
+  if (customerName) {
+    mock.orders = mock.orders.filter(
+      (order) => order.customerName === customerName,
+    )
+  }
+
+  if (status) {
+    mock.orders = mock.orders.filter((order) => order.status === status)
+  }
+
+  //paginate
+  if (pageIndex) {
+    const start = (pageIndex - 1) * 10
+    const end = pageIndex * 10
+    mock.orders = mock.orders.slice(start, end)
+  }
+
   return mock
 }
