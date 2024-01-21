@@ -3,11 +3,11 @@ import { Search, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
 } from '@/components/ui/select'
 
 export function OrderTableFilters() {
@@ -24,7 +24,7 @@ export function OrderTableFilters() {
           <SelectContent>
             <SelectItem value="all">All</SelectItem>
             <SelectItem value="pending">Pending</SelectItem>
-            <SelectItem value="cancelled">Cancelled</SelectItem>
+            <SelectItem value="canceled">canceled</SelectItem>
             <SelectItem value="processing">Processing</SelectItem>
             <SelectItem value="delivering">Delivering</SelectItem>
             <SelectItem value="delivered">Delivered</SelectItem>

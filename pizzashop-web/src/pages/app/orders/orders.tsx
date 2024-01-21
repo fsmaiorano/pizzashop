@@ -1,18 +1,47 @@
+import { useQuery } from '@tanstack/react-query'
 import { Helmet } from 'react-helmet-async'
+import { useSearchParams } from 'react-router-dom'
+import { z } from 'zod'
 
 import { Pagination } from '@/components/pagination'
 import {
-    Table,
-    TableBody,
-    TableHead,
-    TableHeader,
-    TableRow,
+  Table,
+  TableBody,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from '@/components/ui/table'
+import { env } from '@/env'
+import { getOrders, getOrdersMock } from '@/services/get-orders'
 
 import { OrderTableFilters } from './order-table-filters'
 import { OrderTableRow } from './order-table-row'
 
 export function Orders() {
+  const useMock = env.VITE_RUN_MOCK_API
+
+  const [searchParams, setSearchParams] = useSearchParams()
+  const pageIndex = z.coerce
+    .number()
+    .transform((page) => page - 1)
+    .parse(searchParams.get('page') ?? '1')
+
+  const { data: result } = useQuery({
+    queryKey: ['orders', pageIndex],
+    queryFn:
+      useMock === true
+        ? () => getOrdersMock({ pageIndex })
+        : () => getOrders({ pageIndex }),
+    staleTime: Infinity,
+  })
+
+  function handlePaginate(pageIndex: number) {
+    setSearchParams((state) => {
+      state.set('page', String(pageIndex + 1))
+      return state
+    })
+  }
+
   return (
     <>
       <Helmet title="Orders" />
@@ -37,13 +66,34 @@ export function Orders() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {Array.from({ length: 20 }).map((_, i) => {
-                  return <OrderTableRow key={i} />
-                })}
+                {result &&
+                  result.orders.map((order) => {
+                    return (
+                      <OrderTableRow
+                        key={order.orderId}
+                        order={{
+                          ...order,
+                          status: order.status as
+                            | 'pending'
+                            | 'canceled'
+                            | 'processing'
+                            | 'delivering'
+                            | 'delivered',
+                        }}
+                      />
+                    )
+                  })}
               </TableBody>
             </Table>
           </div>
-          <Pagination pageCount={20} pageIndex={0} perPage={10} />
+          {result && (
+            <Pagination
+              pageCount={result.meta.totalCount}
+              pageIndex={pageIndex}
+              perPage={result.meta.perPage}
+              onPageChange={handlePaginate}
+            />
+          )}
         </div>
       </div>
     </>
