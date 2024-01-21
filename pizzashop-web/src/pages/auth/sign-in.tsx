@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { AppContext } from '@/contexts/app-context'
-import { signIn } from '@/services/sign-in-service'
+import { signIn } from '@/services/sign-in'
 
 const signInForm = z.object({
   email: z.string().email(),
@@ -25,7 +25,7 @@ export function SignIn() {
     defaultValues: { email: searchParams.get('email') ?? '' },
   })
 
-  const { useMock, toggleUseMock } = useContext(AppContext)
+  const { useMock } = useContext(AppContext)
 
   const { mutateAsync: authenticate } = useMutation({ mutationFn: signIn })
 
@@ -69,14 +69,6 @@ export function SignIn() {
               className="w-full"
             >
               Sign in
-            </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              className="w-full"
-              onClick={toggleUseMock}
-            >
-              UseMock
             </Button>
           </form>
         </div>

@@ -7,6 +7,11 @@ const envSchema = z.object({
     .optional()
     .default('false')
     .transform((value) => value === 'true'),
+  VITE_RUN_MOCK_API: z
+    .string()
+    .optional()
+    .default('false')
+    .transform((value) => value === 'true'),
 })
 
 export const env = envSchema.parse(import.meta.env)
