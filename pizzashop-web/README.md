@@ -11,6 +11,7 @@ Food delivery app (aka. iFood/Uber Eats) front-end built with TypeScript, React,
 - Recharts
 - Sonner
 - Lucide React
+- React-Query
 
 ## Running
 

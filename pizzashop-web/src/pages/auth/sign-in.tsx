@@ -1,3 +1,5 @@
+import { useMutation } from '@tanstack/react-query'
+import { useContext } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
@@ -7,6 +9,8 @@ import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { AppContext } from '@/contexts/app-context'
+import { signIn } from '@/services/sign-in-service'
 
 const signInForm = z.object({
   email: z.string().email(),
@@ -16,11 +20,20 @@ type SignInForm = z.infer<typeof signInForm>
 
 export function SignIn() {
   const { handleSubmit, register, formState } = useForm<SignInForm>()
+  const { useMock, toggleUseMock } = useContext(AppContext)
+
+  const { mutateAsync: authenticate } = useMutation({ mutationFn: signIn })
 
   async function handleSignIn(data: SignInForm) {
     try {
-      console.log(data)
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      debugger;
+      if (useMock) {
+        console.log(data)
+        await new Promise((resolve) => setTimeout(resolve, 1000))
+      } else {
+        await authenticate({ email: data.email })
+      }
+
       toast.success('We send you an email with a link to sign in')
     } catch {
       toast.error('Something went wrong')
@@ -52,6 +65,14 @@ export function SignIn() {
               className="w-full"
             >
               Sign in
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              className="w-full"
+              onClick={toggleUseMock}
+            >
+              UseMock
             </Button>
           </form>
         </div>
