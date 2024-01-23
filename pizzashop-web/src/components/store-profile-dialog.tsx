@@ -5,10 +5,8 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
-import { env } from '@/env'
 import {
   getManagedRestaurant,
-  getManagedRestaurantMock,
   GetManagedRestaurantResponse,
 } from '@/services/get-managed-restaurant'
 import { updateProfile } from '@/services/update-profile'
@@ -34,10 +32,9 @@ type StoreProfileSchema = z.infer<typeof storeProfileSchema>
 
 export function StoreProfileDialog() {
   const queryClient = useQueryClient()
-  const useMock = env.VITE_RUN_MOCK_API
   const { data: managedRestaurant } = useQuery({
     queryKey: ['managed-restaurant'],
-    queryFn: useMock === true ? getManagedRestaurantMock : getManagedRestaurant,
+    queryFn: getManagedRestaurant,
     staleTime: Infinity,
   })
 

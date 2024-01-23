@@ -2,17 +2,6 @@ import { z } from 'zod'
 
 const envSchema = z.object({
   VITE_API_URL: z.string().url(),
-  VITE_ENABLE_API_DELAY: z
-    .string()
-    .optional()
-    .default('false')
-    .transform((value) => value === 'true'),
-  VITE_RUN_MOCK_API: z
-    .string()
-    .optional()
-    .default('false')
-    .transform((value) => value === 'true'),
-
   VITE_HTTP_LOG_ENABLED: z
     .string()
     .optional()

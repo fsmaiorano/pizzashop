@@ -12,7 +12,7 @@ Food delivery app (aka. iFood/Uber Eats) back-end built with TypeScript, Drizzle
 - PostgreSQL
 - Docker
 
-## Running
+## Usage
 
 This project depends on Docker to setup database. With Docker installed, clone the project, install  dependencies, setup Docker containers and run the application.
 

@@ -10,7 +10,7 @@ export function AuthLayout() {
           <span>Pizza Shop</span>
         </div>
         <footer className="text-sm">
-          <p>&copy; 2021 Pizza Shop. All rights reserved.</p>
+          <p>&copy; 2024 Pizza Shop. All rights reserved.</p>
         </footer>
       </div>
       <div className="relative flex flex-col items-center justify-center">

@@ -14,20 +14,3 @@ export async function getManagedRestaurant() {
 
   return response.data
 }
-
-export async function getManagedRestaurantMock() {
-  const response = {
-    data: {
-      name: 'Pizzaria Cantinho do John Doe',
-      id: '1',
-      createdAt: new Date(),
-      updatedAt: null,
-      description: 'The best pizza in town!',
-      managerId: '1',
-    } as GetManagedRestaurantResponse,
-  }
-
-  console.log('getManagedRestaurantMock', response.data)
-
-  return response.data
-}

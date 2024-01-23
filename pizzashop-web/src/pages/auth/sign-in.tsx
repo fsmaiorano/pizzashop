@@ -8,7 +8,6 @@ import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { env } from '@/env'
 import { signIn } from '@/services/sign-in'
 
 const signInForm = z.object({
@@ -24,18 +23,11 @@ export function SignIn() {
     defaultValues: { email: searchParams.get('email') ?? '' },
   })
 
-  const useMock = env.VITE_RUN_MOCK_API
-
   const { mutateAsync: authenticate } = useMutation({ mutationFn: signIn })
 
   async function handleSignIn(data: SignInForm) {
     try {
-      if (useMock) {
-        console.log(data)
-        await new Promise((resolve) => setTimeout(resolve, 1000))
-      } else {
-        await authenticate({ email: data.email })
-      }
+      await authenticate({ email: data.email })
 
       toast.success('We send you an email with a link to sign in')
     } catch {

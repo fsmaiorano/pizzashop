@@ -8,7 +8,6 @@ import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { env } from '@/env'
 import { registerRestaurant } from '@/services/register-restaurants'
 
 const signUpForm = z.object({
@@ -23,7 +22,6 @@ type SignUpForm = z.infer<typeof signUpForm>
 export function SignUp() {
   const navigate = useNavigate()
   const { handleSubmit, register, formState } = useForm<SignUpForm>()
-  const useMock = env.VITE_RUN_MOCK_API
 
   const { mutateAsync: registerRestaurantFn } = useMutation({
     mutationFn: registerRestaurant,
@@ -31,17 +29,12 @@ export function SignUp() {
 
   async function handleSignUp(data: SignUpForm) {
     try {
-      if (useMock) {
-        console.log(data)
-        await new Promise((resolve) => setTimeout(resolve, 1000))
-      } else {
-        await registerRestaurantFn({
-          email: data.email,
-          restaurantName: data.restaurantName,
-          managerName: data.managerName,
-          phone: data.phone,
-        })
-      }
+      await registerRestaurantFn({
+        email: data.email,
+        restaurantName: data.restaurantName,
+        managerName: data.managerName,
+        phone: data.phone,
+      })
 
       toast.success('Account created successfully', {
         action: {

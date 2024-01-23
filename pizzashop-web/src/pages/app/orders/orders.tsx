@@ -11,16 +11,13 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { env } from '@/env'
-import { getOrders, getOrdersMock } from '@/services/get-orders'
+import { getOrders } from '@/services/get-orders'
 
 import { OrderTableFilters } from './order-table-filters'
 import { OrderTableRow } from './order-table-row'
 import { OrderTableSkeleton } from './order-table-skeleton'
 
 export function Orders() {
-  const useMock = env.VITE_RUN_MOCK_API
-
   const [searchParams, setSearchParams] = useSearchParams()
   const orderId = searchParams.get('orderId')
   const customerName = searchParams.get('customerName')
@@ -33,22 +30,13 @@ export function Orders() {
 
   const { data: result, isLoading: isLoadingOrders } = useQuery({
     queryKey: ['orders', pageIndex, orderId, customerName, status],
-    queryFn:
-      useMock === true
-        ? () =>
-            getOrdersMock({
-              pageIndex,
-              orderId,
-              customerName,
-              status: status === 'all' ? null : status,
-            })
-        : () =>
-            getOrders({
-              pageIndex,
-              orderId,
-              customerName,
-              status: status === 'all' ? null : status,
-            }),
+    queryFn: () =>
+      getOrders({
+        pageIndex,
+        orderId,
+        customerName,
+        status: status === 'all' ? null : status,
+      }),
     staleTime: Infinity,
   })
 

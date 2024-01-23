@@ -12,12 +12,8 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Skeleton } from '@/components/ui/skeleton'
-import { env } from '@/env'
-import {
-  getManagedRestaurant,
-  getManagedRestaurantMock,
-} from '@/services/get-managed-restaurant'
-import { getProfile, getProfileMock } from '@/services/get-profile'
+import { getManagedRestaurant } from '@/services/get-managed-restaurant'
+import { getProfile } from '@/services/get-profile'
 import { signOut } from '@/services/sign-out'
 
 import { StoreProfileDialog } from './store-profile-dialog'
@@ -25,18 +21,16 @@ import { Dialog, DialogTrigger } from './ui/dialog'
 
 export function AccountMenu() {
   const navigate = useNavigate()
-  const useMock = env.VITE_RUN_MOCK_API
 
   const { data: profile, isLoading: isLoadingProfile } = useQuery({
     queryKey: ['profile'],
-    queryFn: useMock === true ? getProfileMock : getProfile,
+    queryFn: getProfile,
   })
 
   const { data: managedRestaurant, isLoading: isLoadingManagedRestaurant } =
     useQuery({
       queryKey: ['managed-restaurant'],
-      queryFn:
-        useMock === true ? getManagedRestaurantMock : getManagedRestaurant,
+      queryFn: getManagedRestaurant,
       staleTime: Infinity,
     })
 

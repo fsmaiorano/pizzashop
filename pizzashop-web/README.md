@@ -13,7 +13,7 @@ Food delivery app (aka. iFood/Uber Eats) front-end built with TypeScript, React,
 - Lucide React
 - React-Query
 
-## Running
+## Usave
 
 This project depends on Docker to setup database. With Docker installed, clone the project, install  dependencies, setup Docker containers and run the application.
 
