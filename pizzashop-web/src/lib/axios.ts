@@ -25,3 +25,18 @@ if (env.VITE_API_URL) {
     return config
   })
 }
+
+if (env.VITE_HTTP_LOG_ENABLED) {
+  api.interceptors.response.use(
+    (response) => {
+      console.log(response.config.url, JSON.stringify(response.data))
+      return response
+    },
+    (error) => {
+      if (error.response?.status === 401) {
+        window.location.href = '/sign-in'
+      }
+      return Promise.reject(error)
+    },
+  )
+}

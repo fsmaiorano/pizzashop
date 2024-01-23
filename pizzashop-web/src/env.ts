@@ -12,6 +12,12 @@ const envSchema = z.object({
     .optional()
     .default('false')
     .transform((value) => value === 'true'),
+
+  VITE_HTTP_LOG_ENABLED: z
+    .string()
+    .optional()
+    .default('false')
+    .transform((value) => value === 'true'),
 })
 
 export const env = envSchema.parse(import.meta.env)
