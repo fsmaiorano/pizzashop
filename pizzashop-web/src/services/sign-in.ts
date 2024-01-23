@@ -4,6 +4,12 @@ export interface SignInRequest {
   email: string
 }
 
+export interface SignInResponse {
+  token: string
+  redirectUrl: string
+}
+
 export async function signIn({ email }: SignInRequest) {
-  await api.post('/authenticate', { email })
+  const response = await api.post<SignInResponse>('/authenticate', { email })
+  return response.data
 }

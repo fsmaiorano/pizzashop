@@ -27,9 +27,13 @@ export function SignIn() {
 
   async function handleSignIn(data: SignInForm) {
     try {
-      await authenticate({ email: data.email })
+      const response = await authenticate({ email: data.email })
 
-      toast.success('We send you an email with a link to sign in')
+      if (response) {
+        window.location.href = response.redirectUrl
+      } else {
+        toast.success('We send you an email with a link to sign in')
+      }
     } catch {
       toast.error('Something went wrong')
     }

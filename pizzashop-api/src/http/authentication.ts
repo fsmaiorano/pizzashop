@@ -1,9 +1,9 @@
-import Elysia, { Static, t } from 'elysia'
+import { env } from '@/env'
 import cookie from '@elysiajs/cookie'
 import jwt from '@elysiajs/jwt'
-import { env } from '@/env'
-import { UnauthorizedError } from './routes/errors/unauthorized-error'
+import Elysia, { Static, t } from 'elysia'
 import { NotAManagerError } from './routes/errors/not-a-manager-error'
+import { UnauthorizedError } from './routes/errors/unauthorized-error'
 
 const jwtPayloadSchema = t.Object({
   sub: t.String(),

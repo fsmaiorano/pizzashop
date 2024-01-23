@@ -1,7 +1,7 @@
-import Elysia, { t } from 'elysia'
 import { db } from '@/db/connection'
 import { authLinks } from '@/db/schema'
 import { createId } from '@paralleldrive/cuid2'
+import Elysia, { t } from 'elysia'
 // import { resend } from '@/mail/client'
 // import { AuthenticationMagicLinkTemplate } from '@/mail/templates/authentication-magic-link'
 import { env } from '@/env'
@@ -44,6 +44,13 @@ export const sendAuthenticationLink = new Elysia().post(
     //     authLink: authLink.toString(),
     //   }),
     // })
+
+    if (env.SEND_TOKEN_TO_FRONTEND) {
+      return {
+        token: authLinkCode,
+        redirectUrl: authLink.toString(),
+      }
+    }
   },
   {
     body: t.Object({
