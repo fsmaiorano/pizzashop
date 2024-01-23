@@ -13,6 +13,7 @@ The project is divided in two parts, the API and the Web.
 - Recharts
 - Sonner
 - Lucide React
+- Tailwind CSS
 - React-Query
 - Drizzle
 - ElysiaJS
@@ -43,6 +44,9 @@ bun dev
 npm install
 npm run dev
 ```
+
+### Observations
+- The .env file is not commited to the repository, so you need to create one based on the .env.example file.
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
