@@ -1,18 +1,10 @@
 import { useQuery } from '@tanstack/react-query'
-import { BarChart } from 'lucide-react'
+import { BarChart, Loader2 } from 'lucide-react'
 import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts'
 import colors from 'tailwindcss/colors'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { getPopularProducts } from '@/services/get-popular-products'
-
-// const data = [
-//   { product: 'Pepperoni', amount: 40 },
-//   { product: 'Mussarela', amount: 20 },
-//   { product: 'Marguerita', amount: 22 },
-//   { product: '4 Formaggi', amount: 35 },
-//   { product: 'Tuna', amount: 32 },
-// ]
 
 const COLORS = [
   colors.sky['500'],
@@ -39,7 +31,7 @@ export function PopularProductsChart() {
         </div>
       </CardHeader>
       <CardContent>
-        {popularProducts && (
+        {popularProducts ? (
           <ResponsiveContainer width="100%" height={240}>
             <PieChart style={{ fontSize: 12 }}>
               <Pie
@@ -96,59 +88,11 @@ export function PopularProductsChart() {
               </Pie>
             </PieChart>
           </ResponsiveContainer>
+        ) : (
+          <div className="flex h-[240px] w-full items-center justify-center">
+            <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+          </div>
         )}
-        {/* <ResponsiveContainer width="100%" height={240}>
-          <PieChart style={{ fontSize: 12 }}>
-            <Pie
-              data={data}
-              dataKey={'amount'}
-              cx="50%"
-              cy="50%"
-              outerRadius={86}
-              innerRadius={64}
-              strokeWidth={8}
-              fill={colors.red['500']}
-              labelLine={false}
-              label={({
-                cx,
-                cy,
-                midAngle,
-                innerRadius,
-                outerRadius,
-                value,
-                index,
-              }) => {
-                const RADIAN = Math.PI / 180
-                const radius = 12 + innerRadius + (outerRadius - innerRadius)
-                const x = cx + radius * Math.cos(-midAngle * RADIAN)
-                const y = cy + radius * Math.sin(-midAngle * RADIAN)
-
-                return (
-                  <text
-                    x={x}
-                    y={y}
-                    className="fill-muted-foreground text-xs"
-                    textAnchor={x > cx ? 'start' : 'end'}
-                    dominantBaseline="central"
-                  >
-                    {data[index].product.length > 12
-                      ? data[index].product.substring(0, 12).concat('...')
-                      : data[index].product}{' '}
-                    ({value})
-                  </text>
-                )
-              }}
-            >
-              {data.map((_, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={COLORS[index]}
-                  className="stroke-background hover:opacity-80"
-                />
-              ))}
-            </Pie>
-          </PieChart>
-        </ResponsiveContainer> */}
       </CardContent>
     </Card>
   )
